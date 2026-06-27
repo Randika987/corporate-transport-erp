@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="action_transport_driver" model="ir.actions.act_window">
+        <field name="name">Drivers</field>
+        <field name="res_model">transport.driver</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_transport_root"
+              name="Fleet &amp; Transport"
+              sequence="10"/>
+
+    <menuitem id="menu_transport_driver"
+              name="Drivers"
+              parent="menu_transport_root"
+              action="action_transport_driver"
+              sequence="10"/>
+</odoo>
