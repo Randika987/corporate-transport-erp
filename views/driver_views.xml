@@ -5,14 +5,52 @@
         <field name="name">transport.driver.tree</field>
         <field name="model">transport.driver</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree
+                default_order="driver_code asc"
+                decoration-success="status == 'active'"
+                decoration-warning="status == 'leave'"
+                decoration-danger="status == 'suspended'"
+                decoration-muted="status == 'inactive'">
+
                 <field name="driver_code"/>
                 <field name="name"/>
                 <field name="phone"/>
                 <field name="license_number"/>
-                <field name="assigned_vehicle_id"/>
+                <field name="license_class"/>
+                <field name="license_expiry"/>
                 <field name="status"/>
             </tree>
+        </field>
+    </record>
+
+    <record id="view_transport_driver_search" model="ir.ui.view">
+        <field name="name">transport.driver.search</field>
+        <field name="model">transport.driver</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="driver_code"/>
+                <field name="name"/>
+                <field name="phone"/>
+                <field name="license_number"/>
+
+                <filter name="filter_active" string="Active"
+                        domain="[('status', '=', 'active')]"/>
+                <filter name="filter_on_leave" string="On Leave"
+                        domain="[('status', '=', 'leave')]"/>
+                <filter name="filter_suspended" string="Suspended"
+                        domain="[('status', '=', 'suspended')]"/>
+                <filter name="filter_inactive" string="Inactive"
+                        domain="[('status', '=', 'inactive')]"/>
+
+                <separator/>
+
+                <group expand="0" string="Group By">
+                    <filter name="group_status" string="Status"
+                            context="{'group_by': 'status'}"/>
+                    <filter name="group_license_class" string="License Class"
+                            context="{'group_by': 'license_class'}"/>
+                </group>
+            </search>
         </field>
     </record>
 
@@ -22,18 +60,30 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+
+                    <field name="photo" widget="image" class="oe_avatar"/>
+
+                    <div class="oe_title">
+                        <label for="driver_code"/>
+                        <h2>
+                            <field name="driver_code" readonly="1"/>
+                        </h2>
+
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Driver Full Name"/>
+                        </h1>
+                    </div>
+
                     <group>
-                        <group>
-                            <field name="photo" widget="image" class="oe_avatar"/>
-                            <field name="driver_code"/>
-                            <field name="name"/>
-                            <field name="nic"/>
-                            <field name="phone"/>
-                            <field name="email"/>
+                        <group string="Personal Information">
+                            <field name="nic" placeholder="Enter NIC number"/>
+                            <field name="phone" placeholder="Enter phone number"/>
+                            <field name="email" placeholder="driver@email.com"/>
                         </group>
 
-                        <group string="License Details">
-                            <field name="license_number"/>
+                        <group string="License Information">
+                            <field name="license_number" placeholder="Enter license number"/>
                             <field name="license_class"/>
                             <field name="license_expiry"/>
                             <field name="experience_years"/>
@@ -41,20 +91,26 @@
                     </group>
 
                     <notebook>
-                        <page string="Assignment">
+                        <page string="Employment">
                             <group>
-                                <field name="assigned_vehicle_id"/>
                                 <field name="status"/>
                             </group>
                         </page>
 
                         <page string="Contact Details">
                             <group>
-                                <field name="address"/>
-                                <field name="emergency_contact"/>
+                                <field name="address" placeholder="Enter driver address"/>
+                                <field name="emergency_contact" placeholder="Emergency contact number"/>
                             </group>
                         </page>
+
+                        <page string="Vehicle History">
+                            <p class="text-muted">
+                                Vehicle assignment history will be available after Trip/Assignment module is implemented.
+                            </p>
+                        </page>
                     </notebook>
+
                 </sheet>
             </form>
         </field>

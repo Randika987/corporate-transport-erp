@@ -1,24 +1,150 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <record id="fleet_vehicle_form_inherit_transport" model="ir.ui.view">
-        <field name="name">fleet.vehicle.form.inherit.transport</field>
+
+    <record id="fleet_vehicle_tree_inherit_transport" model="ir.ui.view">
+        <field name="name">fleet.vehicle.tree.inherit.transport</field>
         <field name="model">fleet.vehicle</field>
-        <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_view_tree"/>
         <field name="arch" type="xml">
-            <xpath expr="//sheet/group" position="after">
-                <group string="Corporate Transport Details">
-                    <group>
-                        <field name="transport_vehicle_code"/>
-                        <field name="transport_vehicle_type"/>
-                        <field name="seating_capacity"/>
-                        <field name="current_odometer"/>
-                    </group>
-                    <group>
-                        <field name="assigned_driver_id"/>
-                        <field name="transport_status"/>
-                    </group>
-                </group>
+
+            <xpath expr="//tree" position="attributes">
+                <attribute name="decoration-success">transport_status == 'available'</attribute>
+                <attribute name="decoration-info">transport_status == 'assigned'</attribute>
+                <attribute name="decoration-warning">transport_status == 'on_trip'</attribute>
+                <attribute name="decoration-danger">transport_status == 'maintenance'</attribute>
+                <attribute name="decoration-muted">transport_status == 'inactive'</attribute>
+            </xpath>
+
+            <xpath expr="//tree/field[@name='license_plate']" position="before">
+                <field name="transport_vehicle_code" string="Vehicle Code"/>
+            </xpath>
+
+            <xpath expr="//tree/field[@name='category_id']" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+
+            <xpath expr="//tree/field[@name='driver_id']" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+
+            <xpath expr="//tree/field[@name='future_driver_id']" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+
+            <xpath expr="//tree/field[@name='tag_ids']" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+
+            <xpath expr="//tree/field[@name='driver_id']" position="after">
+                <field name="assigned_driver_id" string="Assigned Driver"/>
+                <field name="transport_vehicle_type" string="Vehicle Type"/>
+                <field name="seating_capacity" string="Seats"/>
+                <field name="transport_status" string="Status"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="fleet_vehicle_search_inherit_transport" model="ir.ui.view">
+        <field name="name">fleet.vehicle.search.inherit.transport</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field name="transport_vehicle_code" string="Vehicle Code"/>
+                <field name="assigned_driver_id" string="Assigned Driver"/>
+
+                <separator/>
+
+                <filter name="filter_transport_available" string="Available"
+                        domain="[('transport_status', '=', 'available')]"/>
+                <filter name="filter_transport_assigned" string="Assigned"
+                        domain="[('transport_status', '=', 'assigned')]"/>
+                <filter name="filter_transport_on_trip" string="On Trip"
+                        domain="[('transport_status', '=', 'on_trip')]"/>
+                <filter name="filter_transport_maintenance" string="Maintenance"
+                        domain="[('transport_status', '=', 'maintenance')]"/>
+                <filter name="filter_transport_inactive" string="Inactive"
+                        domain="[('transport_status', '=', 'inactive')]"/>
+
+                <separator/>
+
+                <filter name="group_transport_status" string="Transport Status"
+                        context="{'group_by': 'transport_status'}"/>
+                <filter name="group_transport_type" string="Vehicle Type"
+                        context="{'group_by': 'transport_vehicle_type'}"/>
+                <filter name="group_assigned_driver" string="Assigned Driver"
+                        context="{'group_by': 'assigned_driver_id'}"/>
             </xpath>
         </field>
     </record>
+
+   <record id="transport_vehicle_custom_form" model="ir.ui.view">
+    <field name="name">transport.vehicle.custom.form</field>
+    <field name="model">fleet.vehicle</field>
+    <field name="priority">1</field>
+    <field name="arch" type="xml">
+        <form string="Transport Vehicle">
+            <sheet>
+
+                <div class="oe_title">
+                    <label for="transport_vehicle_code"/>
+                    <h2>
+                        <field name="transport_vehicle_code" readonly="1"/>
+                    </h2>
+
+                    <label for="model_id"/>
+                    <h1>
+                        <field name="model_id" placeholder="Vehicle Model"/>
+                    </h1>
+
+                    <label for="license_plate"/>
+                    <h3>
+                        <field name="license_plate" placeholder="License Plate"/>
+                    </h3>
+                </div>
+
+                <group>
+                    <group string="Vehicle Information">
+                        <field name="transport_vehicle_type"/>
+                        <field name="seating_capacity"/>
+                        <field name="current_odometer"/>
+                        <field name="transport_status"/>
+                    </group>
+
+                    <group string="Assignment Information">
+                        <field name="assigned_driver_id"/>
+                        <field name="category_id"/>
+                    </group>
+                </group>
+
+                <notebook>
+                    <page string="Trip History">
+                        <p class="text-muted">
+                            Trip history will be available after the Trip Management module is implemented.
+                        </p>
+                    </page>
+
+                    <page string="Maintenance">
+                        <p class="text-muted">
+                            Maintenance records will be available after the Maintenance module is implemented.
+                        </p>
+                    </page>
+
+                    <page string="Fuel Logs">
+                        <p class="text-muted">
+                            Fuel logs will be available after the Fuel Management module is implemented.
+                        </p>
+                    </page>
+
+                    <page string="Notes">
+                        <field name="description"/>
+                    </page>
+                </notebook>
+
+            </sheet>
+        </form>
+    </field>
+</record> 
+
 </odoo>
