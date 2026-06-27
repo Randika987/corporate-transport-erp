@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="seq_transport_driver" model="ir.sequence">
+        <field name="name">Transport Driver Sequence</field>
+        <field name="code">transport.driver</field>
+        <field name="prefix">DR</field>
+        <field name="padding">5</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+    </record>
+</odoo>

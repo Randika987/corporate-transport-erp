@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
-    <!-- List View -->
     <record id="view_transport_driver_tree" model="ir.ui.view">
         <field name="name">transport.driver.tree</field>
         <field name="model">transport.driver</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="driver_code"/>
                 <field name="name"/>
                 <field name="phone"/>
                 <field name="license_number"/>
+                <field name="assigned_vehicle_id"/>
                 <field name="status"/>
             </tree>
         </field>
     </record>
 
-    <!-- Form View -->
     <record id="view_transport_driver_form" model="ir.ui.view">
         <field name="name">transport.driver.form</field>
         <field name="model">transport.driver</field>
@@ -23,12 +23,38 @@
             <form>
                 <sheet>
                     <group>
-                        <field name="name"/>
-                        <field name="phone"/>
-                        <field name="license_number"/>
-                        <field name="license_expiry"/>
-                        <field name="status"/>
+                        <group>
+                            <field name="photo" widget="image" class="oe_avatar"/>
+                            <field name="driver_code"/>
+                            <field name="name"/>
+                            <field name="nic"/>
+                            <field name="phone"/>
+                            <field name="email"/>
+                        </group>
+
+                        <group string="License Details">
+                            <field name="license_number"/>
+                            <field name="license_class"/>
+                            <field name="license_expiry"/>
+                            <field name="experience_years"/>
+                        </group>
                     </group>
+
+                    <notebook>
+                        <page string="Assignment">
+                            <group>
+                                <field name="assigned_vehicle_id"/>
+                                <field name="status"/>
+                            </group>
+                        </page>
+
+                        <page string="Contact Details">
+                            <group>
+                                <field name="address"/>
+                                <field name="emergency_contact"/>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
