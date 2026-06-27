@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="fleet_vehicle_form_inherit_transport" model="ir.ui.view">
+        <field name="name">fleet.vehicle.form.inherit.transport</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/group" position="after">
+                <group string="Corporate Transport Details">
+                    <group>
+                        <field name="transport_vehicle_code"/>
+                        <field name="transport_vehicle_type"/>
+                        <field name="seating_capacity"/>
+                        <field name="current_odometer"/>
+                    </group>
+                    <group>
+                        <field name="assigned_driver_id"/>
+                        <field name="transport_status"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -29,8 +29,12 @@ Features:
 
     'data': [ 
     'security/ir.model.access.csv',
+
     'data/driver_sequence.xml',
+    'data/vehicle_sequence.xml',
+    
     'views/driver_views.xml',
+    'views/vehicle_views.xml',
     'views/menu.xml',
 
     ],
