@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Tree View -->
+    <record id="view_transport_assignment_tree" model="ir.ui.view">
+        <field name="name">transport.vehicle.assignment.tree</field>
+        <field name="model">transport.vehicle.assignment</field>
+        <field name="arch" type="xml">
+            <tree
+                default_order="assigned_date desc"
+                decoration-success="status == 'assigned'"
+                decoration-muted="status == 'released'">
+
+                <field name="assignment_code"/>
+                <field name="driver_id"/>
+                <field name="vehicle_id"/>
+                <field name="assigned_date"/>
+                <field name="released_date"/>
+                <field name="status"/>
+
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_transport_assignment_form" model="ir.ui.view">
+        <field name="name">transport.vehicle.assignment.form</field>
+        <field name="model">transport.vehicle.assignment</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+
+                    <div class="oe_title">
+                        <label for="assignment_code"/>
+                        <h2>
+                            <field name="assignment_code" readonly="1"/>
+                        </h2>
+                    </div>
+
+                    <group>
+                        <group string="Assignment Information">
+                            <field name="driver_id"/>
+                            <field name="vehicle_id"/>
+                            <field name="status"/>
+                        </group>
+
+                        <group string="Assignment Dates">
+                            <field name="assigned_date"/>
+                            <field name="released_date"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+
+                        <page string="Notes">
+                            <field name="notes"/>
+                        </page>
+
+                    </notebook>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

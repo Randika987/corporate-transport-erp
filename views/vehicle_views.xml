@@ -113,7 +113,7 @@
                     </group>
 
                     <group string="Assignment Information">
-                        <field name="assigned_driver_id"/>
+                        <field name="assigned_driver_id" readonly="1"/>
                         <field name="category_id"/>
                     </group>
                 </group>

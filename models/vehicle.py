@@ -47,12 +47,12 @@ class FleetVehicle(models.Model):
     ], string="Transport Status", default='available', required=True)
 
     assigned_driver_id = fields.Many2one(
-        'transport.driver',
-        string="Assigned Driver",
-        required=True,
-        domain="[('status', '=', 'active')]"
-    )
-
+         'transport.driver',
+         string="Assigned Driver",
+         readonly=True,
+         domain="[('status', '=', 'active')]"
+             )
+   
     @api.model
     def create(self, vals):
         if vals.get('transport_vehicle_code', 'New') == 'New':

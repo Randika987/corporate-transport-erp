@@ -12,6 +12,12 @@
         <field name="view_mode">kanban,tree,form</field>
     </record>
 
+    <record id="action_transport_assignment" model="ir.actions.act_window">
+        <field name="name">Vehicle Assignments</field>
+        <field name="res_model">transport.vehicle.assignment</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
     <menuitem id="menu_transport_root"
               name="Fleet &amp; Transport"
               sequence="10"/>
@@ -27,4 +33,10 @@
               parent="menu_transport_root"
               action="action_transport_vehicle"
               sequence="20"/>
+
+    <menuitem id="menu_transport_assignment"
+              name="Vehicle Assignments"
+              parent="menu_transport_root"
+              action="action_transport_assignment"
+              sequence="30"/>
 </odoo>
