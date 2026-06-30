@@ -1,3 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_transport_driver,transport.driver,model_transport_driver,,1,1,1,1
 access_transport_vehicle_assignment,transport.vehicle.assignment,model_transport_vehicle_assignment,,1,1,1,1
+access_transport_trip,transport.trip,model_transport_trip,,1,1,1,1

@@ -33,11 +33,13 @@ Features:
     'data/driver_sequence.xml',
     'data/vehicle_sequence.xml',
     'data/assignment_sequence.xml',
+    'data/trip_sequence.xml',
    
 
     'views/driver_views.xml',
     'views/vehicle_views.xml',
     'views/assignment_views.xml',
+    'views/trip_views.xml',
     'views/menu.xml',
 
     ],

@@ -18,6 +18,12 @@
         <field name="view_mode">tree,form</field>
     </record>
 
+    <record id="action_transport_trip" model="ir.actions.act_window">
+        <field name="name">Trips</field>
+        <field name="res_model">transport.trip</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
     <menuitem id="menu_transport_root"
               name="Fleet &amp; Transport"
               sequence="10"/>
@@ -39,4 +45,11 @@
               parent="menu_transport_root"
               action="action_transport_assignment"
               sequence="30"/>
+
+    <menuitem id="menu_transport_trip"
+          name="Trips"
+          parent="menu_transport_root"
+          action="action_transport_trip"
+          sequence="40"/>
+
 </odoo>
