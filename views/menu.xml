@@ -1,33 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+
+    <menuitem id="menu_transport_root"
+              name="Fleet &amp; Transport"
+              sequence="10"/>
+
+    <!-- Dashboard Action -->
+    <menuitem id="menu_transport_dashboard"
+              name="Dashboard"
+              parent="menu_transport_root"
+              action="action_open_transport_dashboard"
+              sequence="1"/>
+
+    <!-- Driver -->
     <record id="action_transport_driver" model="ir.actions.act_window">
         <field name="name">Drivers</field>
         <field name="res_model">transport.driver</field>
         <field name="view_mode">tree,form</field>
     </record>
 
+    <!-- Vehicle -->
     <record id="action_transport_vehicle" model="ir.actions.act_window">
         <field name="name">Vehicles</field>
         <field name="res_model">fleet.vehicle</field>
         <field name="view_mode">kanban,tree,form</field>
     </record>
 
+    <!-- Assignment -->
     <record id="action_transport_assignment" model="ir.actions.act_window">
         <field name="name">Vehicle Assignments</field>
         <field name="res_model">transport.vehicle.assignment</field>
         <field name="view_mode">tree,form</field>
     </record>
 
+    <!-- Trip -->
     <record id="action_transport_trip" model="ir.actions.act_window">
         <field name="name">Trips</field>
         <field name="res_model">transport.trip</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_transport_root"
-              name="Fleet &amp; Transport"
-              sequence="10"/>
+    <!-- Fleet Operations -->
+    <record id="action_transport_fleet_operation" model="ir.actions.act_window">
+        <field name="name">Fleet Operations</field>
+        <field name="res_model">transport.fleet.operation</field>
+        <field name="view_mode">tree,form</field>
+    </record>
 
+    <!-- Menus -->
     <menuitem id="menu_transport_driver"
               name="Drivers"
               parent="menu_transport_root"
@@ -47,9 +67,15 @@
               sequence="30"/>
 
     <menuitem id="menu_transport_trip"
-          name="Trips"
-          parent="menu_transport_root"
-          action="action_transport_trip"
-          sequence="40"/>
+              name="Trips"
+              parent="menu_transport_root"
+              action="action_transport_trip"
+              sequence="40"/>
+
+    <menuitem id="menu_transport_fleet_operation"
+              name="Fleet Operations"
+              parent="menu_transport_root"
+              action="action_transport_fleet_operation"
+              sequence="50"/>
 
 </odoo>

@@ -8,7 +8,7 @@
             <tree
                 default_order="driver_code asc"
                 decoration-success="status == 'active'"
-                decoration-warning="status == 'leave'"
+                decoration-warning="status == 'leave' or license_expiry_warning == True"
                 decoration-danger="status == 'suspended'"
                 decoration-muted="status == 'inactive'">
 
@@ -18,6 +18,7 @@
                 <field name="license_number"/>
                 <field name="license_class"/>
                 <field name="license_expiry"/>
+                <field name="license_expiry_warning" invisible="1"/>
                 <field name="status"/>
             </tree>
         </field>
@@ -41,6 +42,8 @@
                         domain="[('status', '=', 'suspended')]"/>
                 <filter name="filter_inactive" string="Inactive"
                         domain="[('status', '=', 'inactive')]"/>
+                <filter name="filter_license_warning" string="License Warning"
+                        domain="[('license_expiry_warning', '=', True)]"/>
 
                 <separator/>
 
@@ -60,6 +63,11 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+
+                    <div class="alert alert-warning" role="alert"
+                         invisible="license_expiry_warning == False">
+                        <field name="license_expiry_message" readonly="1"/>
+                    </div>
 
                     <field name="photo" widget="image" class="oe_avatar"/>
 

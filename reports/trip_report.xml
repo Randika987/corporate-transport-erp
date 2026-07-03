@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_report_transport_trip"
+            model="ir.actions.report">
+
+        <field name="name">Trip Report</field>
+
+        <field name="model">transport.trip</field>
+
+        <field name="report_type">qweb-pdf</field>
+
+        <field name="report_name">
+            transport_management.trip_report_template
+        </field>
+
+        <field name="report_file">
+            transport_management.trip_report_template
+        </field>
+
+        <field name="binding_model_id"
+               ref="model_transport_trip"/>
+
+        <field name="binding_type">report</field>
+
+        <field name="print_report_name">
+            "'Trip Report - %s' % (object.trip_code)"
+        </field>
+
+    </record>
+
+</odoo>

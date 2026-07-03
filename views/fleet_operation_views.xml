@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="view_transport_fleet_operation_tree" model="ir.ui.view">
+        <field name="name">transport.fleet.operation.tree</field>
+        <field name="model">transport.fleet.operation</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="operation_code"/>
+                <field name="operation_date"/>
+                <field name="operation_type"/>
+                <field name="trip_id"/>
+                <field name="vehicle_id"/>
+                <field name="driver_id"/>
+                <field name="trip_distance"/>
+                <field name="fuel_amount"/>
+                <field name="fuel_efficiency"/>
+                <field name="cost_per_km"/>
+                <field name="maintenance_status"/>
+                <field name="service_due"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_transport_fleet_operation_form" model="ir.ui.view">
+        <field name="name">transport.fleet.operation.form</field>
+        <field name="model">transport.fleet.operation</field>
+        <field name="arch" type="xml">
+            <form>
+
+                <header>
+
+                    <button name="action_start_maintenance"
+                            string="Start Maintenance"
+                            type="object"
+                            class="btn-primary"
+                            invisible="operation_type != 'maintenance' or maintenance_status != 'draft'"/>
+
+                    <button name="action_complete_maintenance"
+                            string="Complete Maintenance"
+                            type="object"
+                            class="btn-success"
+                            invisible="operation_type != 'maintenance' or maintenance_status != 'in_progress'"/>
+
+                    <field name="maintenance_status"
+                           widget="statusbar"
+                           statusbar_visible="draft,in_progress,completed"
+                           invisible="operation_type != 'maintenance'"/>
+
+                </header>
+
+                <sheet>
+
+                    <div class="oe_title">
+                        <label for="operation_code"/>
+                        <h2>
+                            <field name="operation_code" readonly="1"/>
+                        </h2>
+                    </div>
+
+                    <group>
+                        <group string="Operation Details">
+                            <field name="trip_id"/>
+                            <field name="operation_type"/>
+                            <field name="operation_date"/>
+                            <field name="current_odometer" readonly="1"/>
+                        </group>
+
+                        <group string="Linked Details">
+                            <field name="vehicle_id"/>
+                            <field name="driver_id"/>
+                        </group>
+                    </group>
+
+                    <group string="Fuel Details"
+                           invisible="operation_type != 'fuel'">
+
+                        <group>
+                            <field name="fuel_amount"/>
+                            <field name="fuel_price_per_liter"/>
+                            <field name="fuel_liters" readonly="1"/>
+                        </group>
+
+                        <group string="Fuel Statistics">
+                            <field name="trip_distance" readonly="1"/>
+                            <field name="fuel_efficiency" readonly="1"/>
+                            <field name="cost_per_km" readonly="1"/>
+                        </group>
+
+                    </group>
+
+                    <group string="Maintenance Details"
+                           invisible="operation_type != 'maintenance'">
+
+                        <group>
+
+                            <field name="service_type"/>
+
+                            <field name="workshop_name"/>
+
+                            <field name="maintenance_cost"/>
+
+                        </group>
+
+                        <group>
+
+                            <field name="next_service_odometer" readonly="1"/>
+
+                            <field name="service_due" readonly="1"/>
+
+                        </group>
+
+                    </group>
+
+                    <notebook>
+
+                        <page string="Notes">
+
+                            <field name="notes"/>
+
+                        </page>
+
+                    </notebook>
+
+                </sheet>
+
+            </form>
+        </field>
+    </record>
+
+</odoo>

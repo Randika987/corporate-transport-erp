@@ -50,6 +50,17 @@ class TransportDriver(models.Model):
     ], string="License Class", required=True)
 
     license_expiry = fields.Date(string="License Expiry")
+
+    license_expiry_warning = fields.Boolean(
+        string="License Expiry Warning",
+        compute="_compute_license_expiry_warning"
+    )
+
+    license_expiry_message = fields.Char(
+        string="License Expiry Message",
+        compute="_compute_license_expiry_warning"
+    )
+
     experience_years = fields.Integer(string="Experience Years")
 
     status = fields.Selection([
@@ -66,6 +77,27 @@ class TransportDriver(models.Model):
                 'transport.driver'
             ) or 'New'
         return super().create(vals)
+
+    @api.depends('license_expiry')
+    def _compute_license_expiry_warning(self):
+        today = fields.Date.today()
+
+        for record in self:
+            record.license_expiry_warning = False
+            record.license_expiry_message = ""
+
+            if record.license_expiry:
+                days_left = (record.license_expiry - today).days
+
+                if days_left < 0:
+                    record.license_expiry_warning = True
+                    record.license_expiry_message = "License has expired!"
+
+                elif days_left <= 30:
+                    record.license_expiry_warning = True
+                    record.license_expiry_message = (
+                        f"License will expire in {days_left} days."
+                    )
 
     @api.constrains('experience_years')
     def _check_experience_years(self):

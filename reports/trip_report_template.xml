@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="trip_report_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2 style="text-align:center;">Corporate Transport Trip Report</h2>
+
+                        <table class="table table-sm table-bordered">
+                            <tr><th>Trip ID</th><td><span t-field="o.trip_code"/></td></tr>
+                            <tr><th>Driver</th><td><span t-field="o.driver_id"/></td></tr>
+                            <tr><th>Vehicle</th><td><span t-field="o.vehicle_id"/></td></tr>
+                            <tr><th>Start Location</th><td><span t-field="o.start_location"/></td></tr>
+                            <tr><th>Destination</th><td><span t-field="o.destination"/></td></tr>
+                            <tr><th>Start Date</th><td><span t-field="o.start_datetime"/></td></tr>
+                            <tr><th>End Date</th><td><span t-field="o.end_datetime"/></td></tr>
+                            <tr><th>Distance</th><td><span t-field="o.distance_km"/> KM</td></tr>
+                            <tr><th>Duration</th><td><span t-field="o.trip_duration"/> Hours</td></tr>
+                            <tr><th>Status</th><td><span t-field="o.status"/></td></tr>
+                            <tr><th>Purpose</th><td><span t-field="o.purpose"/></td></tr>
+                            <tr><th>Notes</th><td><span t-field="o.notes"/></td></tr>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
