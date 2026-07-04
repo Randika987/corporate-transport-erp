@@ -79,23 +79,23 @@ Corporate Transport Management System is a custom ERP solution developed using *
 
 ### Dashboard
 
-![Dashboard](screenshots/dashboard.png)
+![Dashboard](screenshots/Dashboard.jpg)
 
 ### Driver Module
 
-![Driver](screenshots/driver-list.png)
+![Driver](screenshots/Driver.jpg)
 
 ### Vehicle Module
 
-![Vehicle](screenshots/vehicle-list.png)
+![Vehicle](screenshots/Vehicle.jpg)
 
 ### Trip Management
 
-![Trip](screenshots/trip-list.png)
+![Trip](screenshots/Trips.jpg)
 
 ### Fleet Operations
 
-![Fleet](screenshots/fleet-operation.png)
+![Fleet](screenshots/Fleet-Operation.jpg)
 
 ### Reports
 
