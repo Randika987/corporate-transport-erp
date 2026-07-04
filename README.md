@@ -1,3 +1,8 @@
+<p align="center">
+  <img src="screenshots/banner.png" alt="Corporate Transport Management System Banner" width="100%">
+</p>
+
+
 # 🚍 Corporate Transport Management System (Odoo 17)
 
 ## 📌 Overview
