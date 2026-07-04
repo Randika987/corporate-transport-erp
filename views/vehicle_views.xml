@@ -10,7 +10,7 @@
             <xpath expr="//tree" position="attributes">
                 <attribute name="decoration-success">transport_status == 'available'</attribute>
                 <attribute name="decoration-info">transport_status == 'assigned'</attribute>
-                <attribute name="decoration-warning">transport_status == 'on_trip'</attribute>
+                <attribute name="decoration-warning">transport_status == 'on_trip' or service_due_warning == True</attribute>
                 <attribute name="decoration-danger">transport_status == 'maintenance'</attribute>
                 <attribute name="decoration-muted">transport_status == 'inactive'</attribute>
             </xpath>
@@ -40,6 +40,7 @@
                 <field name="transport_vehicle_type" string="Vehicle Type"/>
                 <field name="seating_capacity" string="Seats"/>
                 <field name="transport_status" string="Status"/>
+                <field name="service_due_warning" invisible="1"/>
             </xpath>
 
         </field>
@@ -66,6 +67,8 @@
                         domain="[('transport_status', '=', 'maintenance')]"/>
                 <filter name="filter_transport_inactive" string="Inactive"
                         domain="[('transport_status', '=', 'inactive')]"/>
+                <filter name="filter_service_due" string="Service Due"
+                        domain="[('service_due_warning', '=', True)]"/>
 
                 <separator/>
 
@@ -79,72 +82,81 @@
         </field>
     </record>
 
-   <record id="transport_vehicle_custom_form" model="ir.ui.view">
-    <field name="name">transport.vehicle.custom.form</field>
-    <field name="model">fleet.vehicle</field>
-    <field name="priority">1</field>
-    <field name="arch" type="xml">
-        <form string="Transport Vehicle">
-            <sheet>
+    <record id="transport_vehicle_custom_form" model="ir.ui.view">
+        <field name="name">transport.vehicle.custom.form</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <form string="Transport Vehicle">
+                <sheet>
 
-                <div class="oe_title">
-                    <label for="transport_vehicle_code"/>
-                    <h2>
-                        <field name="transport_vehicle_code" readonly="1"/>
-                    </h2>
+                       <field name="service_due_warning" invisible="1"/>
+                        <field name="service_due_message" invisible="1"/>
 
-                    <label for="model_id"/>
-                    <h1>
-                        <field name="model_id" placeholder="Vehicle Model"/>
-                    </h1>
+                    <div class="alert alert-warning" role="alert"
+                         invisible="service_due_warning == False">
+                        <field name="service_due_message" readonly="1"/>
+                    </div>
 
-                    <label for="license_plate"/>
-                    <h3>
-                        <field name="license_plate" placeholder="License Plate"/>
-                    </h3>
-                </div>
+                    <div class="oe_title">
+                        <label for="transport_vehicle_code"/>
+                        <h2>
+                            <field name="transport_vehicle_code" readonly="1"/>
+                        </h2>
 
-                <group>
-                    <group string="Vehicle Information">
-                        <field name="transport_vehicle_type"/>
-                        <field name="seating_capacity"/>
-                        <field name="current_odometer"/>
-                        <field name="transport_status"/>
+                        <label for="model_id"/>
+                        <h1>
+                            <field name="model_id" placeholder="Vehicle Model"/>
+                        </h1>
+
+                        <label for="license_plate"/>
+                        <h3>
+                            <field name="license_plate" placeholder="License Plate"/>
+                        </h3>
+                    </div>
+
+                    <group>
+                        <group string="Vehicle Information">
+                            <field name="transport_vehicle_type"/>
+                            <field name="seating_capacity"/>
+                            <field name="current_odometer"/>
+                            <field name="next_service_odometer"/>
+                            <field name="transport_status"/>
+                        </group>
+
+                        <group string="Assignment Information">
+                            <field name="assigned_driver_id" readonly="1"/>
+                            <field name="category_id"/>
+                        </group>
                     </group>
 
-                    <group string="Assignment Information">
-                        <field name="assigned_driver_id" readonly="1"/>
-                        <field name="category_id"/>
-                    </group>
-                </group>
+                    <notebook>
+                        <page string="Trip History">
+                            <p class="text-muted">
+                                Trip history will be available after the Trip Management module is implemented.
+                            </p>
+                        </page>
 
-                <notebook>
-                    <page string="Trip History">
-                        <p class="text-muted">
-                            Trip history will be available after the Trip Management module is implemented.
-                        </p>
-                    </page>
+                        <page string="Maintenance">
+                            <p class="text-muted">
+                                Maintenance records will be available after the Maintenance module is implemented.
+                            </p>
+                        </page>
 
-                    <page string="Maintenance">
-                        <p class="text-muted">
-                            Maintenance records will be available after the Maintenance module is implemented.
-                        </p>
-                    </page>
+                        <page string="Fuel Logs">
+                            <p class="text-muted">
+                                Fuel logs will be available after the Fuel Management module is implemented.
+                            </p>
+                        </page>
 
-                    <page string="Fuel Logs">
-                        <p class="text-muted">
-                            Fuel logs will be available after the Fuel Management module is implemented.
-                        </p>
-                    </page>
+                        <page string="Notes">
+                            <field name="description"/>
+                        </page>
+                    </notebook>
 
-                    <page string="Notes">
-                        <field name="description"/>
-                    </page>
-                </notebook>
-
-            </sheet>
-        </form>
-    </field>
-</record> 
+                </sheet>
+            </form>
+        </field>
+    </record>
 
 </odoo>

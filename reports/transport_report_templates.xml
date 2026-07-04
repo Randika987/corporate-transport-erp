@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <template id="driver_report_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Driver Report</h2>
+                        <table class="table table-sm table-bordered">
+                            <tr><th>Driver Code</th><td><span t-field="o.driver_code"/></td></tr>
+                            <tr><th>Name</th><td><span t-field="o.name"/></td></tr>
+                            <tr><th>Phone</th><td><span t-field="o.phone"/></td></tr>
+                            <tr><th>License No</th><td><span t-field="o.license_number"/></td></tr>
+                            <tr><th>License Class</th><td><span t-field="o.license_class"/></td></tr>
+                            <tr><th>License Expiry</th><td><span t-field="o.license_expiry"/></td></tr>
+                            <tr><th>Status</th><td><span t-field="o.status"/></td></tr>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="vehicle_report_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Vehicle Report</h2>
+                        <table class="table table-sm table-bordered">
+                            <tr><th>Vehicle Code</th><td><span t-field="o.transport_vehicle_code"/></td></tr>
+                            <tr><th>License Plate</th><td><span t-field="o.license_plate"/></td></tr>
+                            <tr><th>Model</th><td><span t-field="o.model_id"/></td></tr>
+                            <tr><th>Type</th><td><span t-field="o.transport_vehicle_type"/></td></tr>
+                            <tr><th>Seats</th><td><span t-field="o.seating_capacity"/></td></tr>
+                            <tr><th>Current Odometer</th><td><span t-field="o.current_odometer"/></td></tr>
+                            <tr><th>Next Service</th><td><span t-field="o.next_service_odometer"/></td></tr>
+                            <tr><th>Status</th><td><span t-field="o.transport_status"/></td></tr>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="fleet_operation_report_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Fleet Operation Report</h2>
+                        <table class="table table-sm table-bordered">
+                            <tr><th>Operation ID</th><td><span t-field="o.operation_code"/></td></tr>
+                            <tr><th>Date</th><td><span t-field="o.operation_date"/></td></tr>
+                            <tr><th>Type</th><td><span t-field="o.operation_type"/></td></tr>
+                            <tr><th>Trip</th><td><span t-field="o.trip_id"/></td></tr>
+                            <tr><th>Vehicle</th><td><span t-field="o.vehicle_id"/></td></tr>
+                            <tr><th>Driver</th><td><span t-field="o.driver_id"/></td></tr>
+                            <tr><th>Fuel Amount</th><td><span t-field="o.fuel_amount"/></td></tr>
+                            <tr><th>Fuel Liters</th><td><span t-field="o.fuel_liters"/></td></tr>
+                            <tr><th>Maintenance Cost</th><td><span t-field="o.maintenance_cost"/></td></tr>
+                            <tr><th>Service Type</th><td><span t-field="o.service_type"/></td></tr>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

@@ -48,6 +48,8 @@ Features:
     'views/menu.xml',
     'reports/trip_report_template.xml',
     'reports/trip_report.xml',
+    'reports/transport_report_templates.xml',
+    'reports/transport_reports.xml',
 
     ],
 

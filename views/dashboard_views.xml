@@ -7,23 +7,142 @@
         <field name="arch" type="xml">
             <form string="Transport Dashboard" create="false" edit="false">
                 <sheet>
+
                     <h1>Corporate Transport Dashboard</h1>
 
-                    <group string="Fleet Overview">
-                        <group>
+                    <!-- KPI Cards -->
+                    <group col="4">
+
+                        <group string="🚗 Total Vehicles">
                             <field name="total_vehicles" readonly="1"/>
+                        </group>
+
+                        <group string="👨 Total Drivers">
+                            <field name="total_drivers" readonly="1"/>
+                        </group>
+
+                        <group string="🛣 Total Trips">
+                            <field name="total_trips" readonly="1"/>
+                        </group>
+
+                        <group string="⛽ Total Fuel Cost">
+                            <field name="total_fuel_cost" readonly="1"/>
+                        </group>
+
+                    </group>
+
+                    <separator string="Fleet Status"/>
+
+                    <group col="3">
+
+                        <group string="Available Vehicles">
                             <field name="available_vehicles" readonly="1"/>
+                        </group>
+
+                        <group string="Vehicles On Trip">
                             <field name="vehicles_on_trip" readonly="1"/>
+                        </group>
+
+                        <group string="Vehicles in Maintenance">
                             <field name="vehicles_maintenance" readonly="1"/>
                         </group>
 
-                        <group>
-                            <field name="total_drivers" readonly="1"/>
-                            <field name="total_trips" readonly="1"/>
-                            <field name="total_fuel_cost" readonly="1"/>
+                    </group>
+
+                    <separator string="Maintenance"/>
+
+                    <group col="3">
+
+                        <group string="🔧 Maintenance Cost">
                             <field name="total_maintenance_cost" readonly="1"/>
                         </group>
+
+                        <group string="⚠ Service Due Vehicles">
+                            <field name="service_due_count" readonly="1"/>
+                        </group>
+
+                        <group string="📄 License Due Drivers">
+                            <field name="license_due_count" readonly="1"/>
+                        </group>
+
                     </group>
+
+                    <separator string="Live Notifications"/>
+
+                    <div class="alert alert-warning" role="alert">
+                        <strong>⚠ Vehicle Service Alerts</strong><br/>
+                        Vehicles requiring service:
+                        <field name="service_due_count" readonly="1"/>
+                    </div>
+
+                    <div class="alert alert-info" role="alert">
+                        <strong>📄 Driver License Alerts</strong><br/>
+                        Drivers with licenses expiring within 30 days:
+                        <field name="license_due_count" readonly="1"/>
+                    </div>
+
+                    <!-- ================= QUICK ACTIONS ================= -->
+
+                    <separator string="Quick Actions"/>
+
+                    <div class="row">
+
+                        <div class="col-4">
+                            <button
+                                name="action_open_service_due_vehicles"
+                                string="⚠ Service Due Vehicles"
+                                type="object"
+                                class="btn btn-warning w-100"/>
+                        </div>
+
+                        <div class="col-4">
+                            <button
+                                name="action_open_license_due_drivers"
+                                string="📄 License Due Drivers"
+                                type="object"
+                                class="btn btn-info w-100"/>
+                        </div>
+
+                        <div class="col-4">
+                            <button
+                                name="action_open_available_vehicles"
+                                string="🚗 Available Vehicles"
+                                type="object"
+                                class="btn btn-success w-100"/>
+                        </div>
+
+                    </div>
+
+                    <br/>
+
+                    <div class="row">
+
+                        <div class="col-4">
+                            <button
+                                name="action_open_trips"
+                                string="🛣 View Trips"
+                                type="object"
+                                class="btn btn-secondary w-100"/>
+                        </div>
+
+                        <div class="col-4">
+                            <button
+                                name="action_open_fleet_operations"
+                                string="⛽ Fleet Operations"
+                                type="object"
+                                class="btn btn-secondary w-100"/>
+                        </div>
+
+                        <div class="col-4">
+                            <button
+                                name="action_open_maintenance"
+                                string="🔧 Maintenance Vehicles"
+                                type="object"
+                                class="btn btn-secondary w-100"/>
+                        </div>
+
+                    </div>
+
                 </sheet>
             </form>
         </field>

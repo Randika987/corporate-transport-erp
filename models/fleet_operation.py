@@ -7,12 +7,7 @@ class TransportFleetOperation(models.Model):
     _rec_name = 'operation_code'
     _order = 'operation_date desc'
 
-    operation_code = fields.Char(
-        string="Operation ID",
-        default="New",
-        readonly=True,
-        copy=False
-    )
+    operation_code = fields.Char(string="Operation ID", default="New", readonly=True, copy=False)
 
     trip_id = fields.Many2one(
         'transport.trip',
@@ -21,43 +16,37 @@ class TransportFleetOperation(models.Model):
         domain="[('status', '=', 'completed')]"
     )
 
-    vehicle_id = fields.Many2one(
-        related='trip_id.vehicle_id',
-        string="Vehicle",
-        store=True,
-        readonly=True
-    )
-
-    driver_id = fields.Many2one(
-        related='trip_id.driver_id',
-        string="Driver",
-        store=True,
-        readonly=True
-    )
+    vehicle_id = fields.Many2one(related='trip_id.vehicle_id', string="Vehicle", store=True, readonly=True)
+    driver_id = fields.Many2one(related='trip_id.driver_id', string="Driver", store=True, readonly=True)
 
     operation_type = fields.Selection([
         ('fuel', 'Fuel'),
         ('maintenance', 'Maintenance')
     ], string="Operation Type", required=True)
 
-    operation_date = fields.Date(
-        string="Date",
-        default=fields.Date.today,
-        required=True
-    )
+    operation_date = fields.Date(string="Date", default=fields.Date.today, required=True)
 
     current_odometer = fields.Float(
         string="Current Odometer",
+        compute="_compute_trip_values",
+        store=True,
+        readonly=True
+    )
+
+    trip_distance = fields.Float(
+        string="Trip Distance (KM)",
+        compute="_compute_trip_values",
+        store=True,
         readonly=True
     )
 
     fuel_amount = fields.Float(string="Fuel Amount")
     fuel_price_per_liter = fields.Float(string="Price Per Liter")
-    fuel_liters = fields.Float(string="Fuel Liters")
 
-    trip_distance = fields.Float(
-        string="Trip Distance (KM)",
-        readonly=True
+    fuel_liters = fields.Float(
+        string="Fuel Liters",
+        compute="_compute_fuel_liters",
+        store=True
     )
 
     fuel_efficiency = fields.Float(
@@ -93,7 +82,8 @@ class TransportFleetOperation(models.Model):
 
     service_due = fields.Boolean(
         string="Service Due",
-        compute="_compute_service_due"
+        compute="_compute_service_due",
+        store=True
     )
 
     notes = fields.Text(string="Notes")
@@ -106,24 +96,23 @@ class TransportFleetOperation(models.Model):
             ) or 'New'
         return super().create(vals)
 
-    @api.onchange('trip_id')
-    def _onchange_trip_id(self):
+    @api.depends('trip_id', 'trip_id.distance_km', 'trip_id.vehicle_id.current_odometer')
+    def _compute_trip_values(self):
         for record in self:
-            if record.trip_id and record.trip_id.vehicle_id:
-                record.current_odometer = record.trip_id.vehicle_id.current_odometer
-                record.trip_distance = record.trip_id.distance_km
+            record.trip_distance = record.trip_id.distance_km if record.trip_id else 0.0
+            record.current_odometer = (
+                record.trip_id.vehicle_id.current_odometer
+                if record.trip_id and record.trip_id.vehicle_id
+                else 0.0
+            )
 
-    @api.onchange('fuel_amount', 'fuel_price_per_liter')
-    def _onchange_fuel_amount(self):
+    @api.depends('fuel_amount', 'fuel_price_per_liter')
+    def _compute_fuel_liters(self):
         for record in self:
             if record.fuel_amount > 0 and record.fuel_price_per_liter > 0:
                 record.fuel_liters = record.fuel_amount / record.fuel_price_per_liter
-
-    @api.onchange('fuel_liters', 'fuel_price_per_liter')
-    def _onchange_fuel_liters(self):
-        for record in self:
-            if record.fuel_liters > 0 and record.fuel_price_per_liter > 0:
-                record.fuel_amount = record.fuel_liters * record.fuel_price_per_liter
+            else:
+                record.fuel_liters = 0.0
 
     @api.depends('trip_distance', 'fuel_amount', 'fuel_liters')
     def _compute_fuel_statistics(self):
@@ -134,7 +123,6 @@ class TransportFleetOperation(models.Model):
             if record.trip_distance > 0:
                 if record.fuel_liters > 0:
                     record.fuel_efficiency = record.trip_distance / record.fuel_liters
-
                 if record.fuel_amount > 0:
                     record.cost_per_km = record.fuel_amount / record.trip_distance
 
@@ -157,19 +145,21 @@ class TransportFleetOperation(models.Model):
     @api.depends('current_odometer', 'next_service_odometer')
     def _compute_service_due(self):
         for record in self:
-            record.service_due = False
-
-            if record.next_service_odometer > 0:
-                record.service_due = (
-                    record.current_odometer >= record.next_service_odometer
-                )
+            record.service_due = (
+                record.next_service_odometer > 0 and
+                record.current_odometer >= record.next_service_odometer
+            )
 
     def action_start_maintenance(self):
         for record in self:
             record.maintenance_status = 'in_progress'
-            record.vehicle_id.transport_status = 'maintenance'
+            if record.vehicle_id:
+                record.vehicle_id.transport_status = 'maintenance'
 
     def action_complete_maintenance(self):
         for record in self:
             record.maintenance_status = 'completed'
-            record.vehicle_id.transport_status = 'assigned'
+            if record.vehicle_id:
+                record.vehicle_id.transport_status = 'assigned'
+                if record.next_service_odometer:
+                    record.vehicle_id.next_service_odometer = record.next_service_odometer

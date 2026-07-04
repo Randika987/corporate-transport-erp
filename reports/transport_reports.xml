@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_report_transport_driver" model="ir.actions.report">
+        <field name="name">Driver Report</field>
+        <field name="model">transport.driver</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">transport_management.driver_report_template</field>
+        <field name="report_file">transport_management.driver_report_template</field>
+        <field name="binding_model_id" ref="model_transport_driver"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'Driver Report - %s' % (object.name)</field>
+    </record>
+
+    <record id="action_report_transport_vehicle" model="ir.actions.report">
+        <field name="name">Vehicle Report</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">transport_management.vehicle_report_template</field>
+        <field name="report_file">transport_management.vehicle_report_template</field>
+        <field name="binding_model_id" ref="fleet.model_fleet_vehicle"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'Vehicle Report - %s' % (object.license_plate)</field>
+    </record>
+
+    <record id="action_report_transport_fleet_operation" model="ir.actions.report">
+        <field name="name">Fleet Operation Report</field>
+        <field name="model">transport.fleet.operation</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">transport_management.fleet_operation_report_template</field>
+        <field name="report_file">transport_management.fleet_operation_report_template</field>
+        <field name="binding_model_id" ref="model_transport_fleet_operation"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'Fleet Operation Report - %s' % (object.operation_code)</field>
+    </record>
+
+</odoo>

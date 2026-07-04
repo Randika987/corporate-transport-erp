@@ -38,6 +38,23 @@ class FleetVehicle(models.Model):
         default=0.0
     )
 
+    next_service_odometer = fields.Float(
+        string="Next Service Odometer",
+        default=5000.0
+    )
+
+    service_due_warning = fields.Boolean(
+        string="Service Due",
+        compute="_compute_service_warning",
+        store=True
+    )
+
+    service_due_message = fields.Char(
+        string="Service Message",
+        compute="_compute_service_warning",
+        store=True
+    )
+
     transport_status = fields.Selection([
         ('available', 'Available'),
         ('assigned', 'Assigned'),
@@ -47,12 +64,12 @@ class FleetVehicle(models.Model):
     ], string="Transport Status", default='available', required=True)
 
     assigned_driver_id = fields.Many2one(
-         'transport.driver',
-         string="Assigned Driver",
-         readonly=True,
-         domain="[('status', '=', 'active')]"
-             )
-   
+        'transport.driver',
+        string="Assigned Driver",
+        readonly=True,
+        domain="[('status', '=', 'active')]"
+    )
+
     @api.model
     def create(self, vals):
         if vals.get('transport_vehicle_code', 'New') == 'New':
@@ -71,6 +88,35 @@ class FleetVehicle(models.Model):
             'bike': 2,
         }
         self.seating_capacity = seat_map.get(self.transport_vehicle_type, 0)
+
+    @api.onchange('current_odometer')
+    def _onchange_current_odometer(self):
+        if (
+            self.next_service_odometer > 0 and
+            self.current_odometer >= self.next_service_odometer
+        ):
+            return {
+                'warning': {
+                    'title': 'Service Due',
+                    'message': 'This vehicle has reached the next service mileage.'
+                }
+            }
+
+    @api.depends('current_odometer', 'next_service_odometer')
+    def _compute_service_warning(self):
+        for record in self:
+            record.service_due_warning = False
+            record.service_due_message = ""
+
+            if (
+                record.next_service_odometer > 0 and
+                record.current_odometer >= record.next_service_odometer
+            ):
+                record.service_due_warning = True
+                record.service_due_message = (
+                    f"Vehicle service is due! "
+                    f"Current Odometer: {record.current_odometer:.0f} KM"
+                )
 
     @api.constrains('seating_capacity')
     def _check_seating_capacity(self):

@@ -16,6 +16,7 @@
                 <field name="fuel_amount"/>
                 <field name="fuel_efficiency"/>
                 <field name="cost_per_km"/>
+                <field name="maintenance_cost"/>
                 <field name="maintenance_status"/>
                 <field name="service_due"/>
             </tree>
@@ -27,9 +28,7 @@
         <field name="model">transport.fleet.operation</field>
         <field name="arch" type="xml">
             <form>
-
                 <header>
-
                     <button name="action_start_maintenance"
                             string="Start Maintenance"
                             type="object"
@@ -46,11 +45,9 @@
                            widget="statusbar"
                            statusbar_visible="draft,in_progress,completed"
                            invisible="operation_type != 'maintenance'"/>
-
                 </header>
 
                 <sheet>
-
                     <div class="oe_title">
                         <label for="operation_code"/>
                         <h2>
@@ -72,9 +69,7 @@
                         </group>
                     </group>
 
-                    <group string="Fuel Details"
-                           invisible="operation_type != 'fuel'">
-
+                    <group string="Fuel Details" invisible="operation_type != 'fuel'">
                         <group>
                             <field name="fuel_amount"/>
                             <field name="fuel_price_per_liter"/>
@@ -86,45 +81,53 @@
                             <field name="fuel_efficiency" readonly="1"/>
                             <field name="cost_per_km" readonly="1"/>
                         </group>
-
                     </group>
 
-                    <group string="Maintenance Details"
-                           invisible="operation_type != 'maintenance'">
-
+                    <group string="Maintenance Details" invisible="operation_type != 'maintenance'">
                         <group>
-
                             <field name="service_type"/>
-
                             <field name="workshop_name"/>
-
                             <field name="maintenance_cost"/>
-
                         </group>
 
                         <group>
-
                             <field name="next_service_odometer" readonly="1"/>
-
                             <field name="service_due" readonly="1"/>
-
                         </group>
-
                     </group>
 
                     <notebook>
-
                         <page string="Notes">
-
                             <field name="notes"/>
-
                         </page>
-
                     </notebook>
-
                 </sheet>
-
             </form>
+        </field>
+    </record>
+
+    <record id="view_transport_fleet_operation_graph" model="ir.ui.view">
+        <field name="name">transport.fleet.operation.graph</field>
+        <field name="model">transport.fleet.operation</field>
+        <field name="arch" type="xml">
+            <graph string="Fleet Operation Cost Analysis" type="bar">
+                <field name="operation_date" interval="month"/>
+                <field name="fuel_amount" type="measure"/>
+                <field name="maintenance_cost" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_transport_fleet_operation_pivot" model="ir.ui.view">
+        <field name="name">transport.fleet.operation.pivot</field>
+        <field name="model">transport.fleet.operation</field>
+        <field name="arch" type="xml">
+            <pivot string="Fleet Operation Analysis">
+                <field name="operation_type" type="row"/>
+                <field name="operation_date" interval="month" type="col"/>
+                <field name="fuel_amount" type="measure"/>
+                <field name="maintenance_cost" type="measure"/>
+            </pivot>
         </field>
     </record>
 

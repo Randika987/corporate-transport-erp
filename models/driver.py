@@ -41,7 +41,11 @@ class TransportDriver(models.Model):
     address = fields.Text(string="Address")
     emergency_contact = fields.Char(string="Emergency Contact")
 
-    license_number = fields.Char(string="License Number", required=True)
+    license_number = fields.Char(
+        string="License Number",
+        required=True
+    )
+
     license_class = fields.Selection([
         ('A', 'A - Motorcycle'),
         ('B', 'B - Car/Van'),
@@ -51,17 +55,25 @@ class TransportDriver(models.Model):
 
     license_expiry = fields.Date(string="License Expiry")
 
+    # ===============================
+    # License Expiry Warning
+    # ===============================
+
     license_expiry_warning = fields.Boolean(
         string="License Expiry Warning",
-        compute="_compute_license_expiry_warning"
+        compute="_compute_license_expiry_warning",
+        store=True
     )
 
     license_expiry_message = fields.Char(
         string="License Expiry Message",
-        compute="_compute_license_expiry_warning"
+        compute="_compute_license_expiry_warning",
+        store=True
     )
 
-    experience_years = fields.Integer(string="Experience Years")
+    experience_years = fields.Integer(
+        string="Experience Years"
+    )
 
     status = fields.Selection([
         ('active', 'Active'),
@@ -103,7 +115,9 @@ class TransportDriver(models.Model):
     def _check_experience_years(self):
         for record in self:
             if record.experience_years < 0:
-                raise ValidationError("Experience years cannot be negative.")
+                raise ValidationError(
+                    "Experience years cannot be negative."
+                )
 
     def name_get(self):
         result = []

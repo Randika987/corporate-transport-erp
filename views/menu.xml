@@ -37,14 +37,14 @@
     <record id="action_transport_trip" model="ir.actions.act_window">
         <field name="name">Trips</field>
         <field name="res_model">transport.trip</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,graph,pivot</field>
     </record>
 
     <!-- Fleet Operations -->
     <record id="action_transport_fleet_operation" model="ir.actions.act_window">
         <field name="name">Fleet Operations</field>
         <field name="res_model">transport.fleet.operation</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,graph,pivot</field>
     </record>
 
     <!-- Menus -->

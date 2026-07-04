@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
-    <!-- Tree View -->
     <record id="view_transport_trip_tree" model="ir.ui.view">
         <field name="name">transport.trip.tree</field>
         <field name="model">transport.trip</field>
@@ -11,7 +10,6 @@
                   decoration-warning="status == 'started'"
                   decoration-success="status == 'completed'"
                   decoration-muted="status == 'cancelled'">
-
                 <field name="trip_code"/>
                 <field name="driver_id"/>
                 <field name="vehicle_id"/>
@@ -20,22 +18,17 @@
                 <field name="start_datetime"/>
                 <field name="distance_km"/>
                 <field name="status"/>
-
             </tree>
         </field>
     </record>
 
-    <!-- Form View -->
     <record id="view_transport_trip_form" model="ir.ui.view">
         <field name="name">transport.trip.form</field>
         <field name="model">transport.trip</field>
         <field name="priority">20</field>
-
         <field name="arch" type="xml">
             <form string="Transport Trip">
-
                 <header>
-
                     <button name="action_start_trip"
                             string="Start Trip"
                             type="object"
@@ -57,11 +50,9 @@
                     <field name="status"
                            widget="statusbar"
                            statusbar_visible="draft,started,completed,cancelled"/>
-
                 </header>
 
                 <sheet>
-
                     <div class="oe_title">
                         <label for="trip_code"/>
                         <h2>
@@ -70,70 +61,64 @@
                     </div>
 
                     <group>
-
                         <group string="Assignment">
-                            <field name="assignment_id"
-                                   readonly="status != 'draft'"/>
-
+                            <field name="assignment_id" readonly="status != 'draft'"/>
                             <field name="driver_id" readonly="1"/>
                             <field name="vehicle_id" readonly="1"/>
                         </group>
 
                         <group string="Trip Information">
-                            <field name="start_location"
-                                   readonly="status == 'completed'"/>
-
-                            <field name="destination"
-                                   readonly="status == 'completed'"/>
-
-                            <field name="purpose"
-                                   readonly="status == 'completed'"/>
+                            <field name="start_location" readonly="status == 'completed'"/>
+                            <field name="destination" readonly="status == 'completed'"/>
+                            <field name="purpose" readonly="status == 'completed'"/>
                         </group>
-
                     </group>
 
                     <group>
-
                         <group string="Time">
-
-                            <field name="start_datetime"
-                                   readonly="status != 'draft'"/>
-
-                            <field name="end_datetime"
-                                   readonly="status == 'completed'"/>
-
-                            <field name="trip_duration"
-                                   readonly="1"/>
-
+                            <field name="start_datetime" readonly="status != 'draft'"/>
+                            <field name="end_datetime" readonly="status == 'completed'"/>
+                            <field name="trip_duration" readonly="1"/>
                         </group>
 
                         <group string="Odometer &amp; Distance">
-
-                            <field name="start_odometer"
-                                   readonly="1"/>
-
-                            <field name="distance_km"
-                                   readonly="status != 'started'"/>
-
-                            <field name="end_odometer"
-                                   readonly="1"/>
-
+                            <field name="start_odometer" readonly="1"/>
+                            <field name="distance_km" readonly="status != 'started'"/>
+                            <field name="end_odometer" readonly="1"/>
                         </group>
-
                     </group>
 
                     <notebook>
-
                         <page string="Notes">
-                            <field name="notes"
-                                   readonly="status == 'completed'"/>
+                            <field name="notes" readonly="status == 'completed'"/>
                         </page>
-
                     </notebook>
-
                 </sheet>
-
             </form>
+        </field>
+    </record>
+
+    <record id="view_transport_trip_graph" model="ir.ui.view">
+        <field name="name">transport.trip.graph</field>
+        <field name="model">transport.trip</field>
+        <field name="arch" type="xml">
+            <graph string="Trip Distance Analysis" type="bar">
+                <field name="start_datetime" interval="month"/>
+                <field name="distance_km" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_transport_trip_pivot" model="ir.ui.view">
+        <field name="name">transport.trip.pivot</field>
+        <field name="model">transport.trip</field>
+        <field name="arch" type="xml">
+            <pivot string="Trip Analysis">
+                <field name="status" type="row"/>
+                <field name="start_datetime" interval="month" type="col"/>
+                <field name="distance_km" type="measure"/>
+                
+            </pivot>
         </field>
     </record>
 
